@@ -1,4 +1,4 @@
-module github.com/efective
+module github.com/effective
 
 go 1.25.0
 

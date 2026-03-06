@@ -1,4 +1,4 @@
-package efective
+package effective
 
 import (
 	"context"

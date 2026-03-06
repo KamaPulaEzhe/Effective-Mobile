@@ -1,8 +1,12 @@
 package service
 
-import "github.com/efective/pkg/repository"
+import (
+	"github.com/effective"
+	"github.com/effective/pkg/repository"
+)
 
 type Subscription interface {
+	Create(sub effective.Sub) (int, error)
 }
 
 type Service struct {
