@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"github.com/efective/pkg/service"
+	"github.com/effective/pkg/service"
 	"github.com/gin-gonic/gin"
 )
 

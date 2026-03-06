@@ -3,10 +3,10 @@ package main
 import (
 	"os"
 
-	"github.com/efective"
-	"github.com/efective/pkg/handler"
-	"github.com/efective/pkg/repository"
-	"github.com/efective/pkg/service"
+	"github.com/effective"
+	"github.com/effective/pkg/handler"
+	"github.com/effective/pkg/repository"
+	"github.com/effective/pkg/service"
 	"github.com/joho/godotenv"
 	"github.com/sirupsen/logrus"
 	"github.com/spf13/viper"
@@ -39,8 +39,8 @@ func main() {
 	services := service.NewService(repos)
 	handlers := handler.NewHandler(services)
 
-	srv := new(efective.Server)
-	if err := srv.Run(viper.GetString("8000"), handlers.InitRoutes()); err != nil {
+	srv := new(effective.Server)
+	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
 
@@ -48,7 +48,7 @@ func main() {
 
 func initCOnfig() error {
 	viper.AddConfigPath("configs")
-	viper.SetConfigName("configs")
+	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }
 
