@@ -14,6 +14,7 @@ import (
 
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
+
 	if err := initCOnfig(); err != nil {
 		logrus.Fatalf("error initializing configs %s", err.Error())
 	}
@@ -30,9 +31,8 @@ func main() {
 		SSLMode:  viper.GetString("db.sslmode"),
 		Password: os.Getenv("DB_PASSWORD"),
 	})
-
 	if err != nil {
-
+		logrus.Fatalf("failed to initialize db: %s", err.Error())
 	}
 
 	repos := repository.NewRepository(db)
@@ -43,7 +43,6 @@ func main() {
 	if err := srv.Run(viper.GetString("port"), handlers.InitRoutes()); err != nil {
 		logrus.Fatalf("error occured while running http server: %s", err.Error())
 	}
-
 }
 
 func initCOnfig() error {
@@ -51,6 +50,3 @@ func initCOnfig() error {
 	viper.SetConfigName("config")
 	return viper.ReadInConfig()
 }
-
-// docker run --name-todo-db -e POSTGRES_PASSWORD='qwerty'|
-// docker run --name=todo-db -e POSTGRES_PASSWORD='qwerty' -p 5436:5432 -d --rm postgres
