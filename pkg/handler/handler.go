@@ -22,13 +22,12 @@ func (h *Handler) InitRoutes() *gin.Engine {
 		{
 			subs.GET("/total-cost", h.getCost)
 			subs.GET("/user/:user_id", h.getUserInfo)
-
 			subs.POST("/", h.createSub)
-			subs.GET("/", h.getAllSubs)
+			// subs.GET("/:id", h.getAllSubs)
 			subs.GET("/:id", h.getSub)
-			subs.PUT("/:id", h.updateSub)
+			// subs.PUT("/:id", h.updateSub)
+			subs.PATCH("/:id", h.updateSub)
 			subs.DELETE("/:id", h.deleteSub)
-			// subs.DELETE("/", h.deleteAllSubs)
 		}
 	}
 

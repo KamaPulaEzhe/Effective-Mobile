@@ -6,7 +6,10 @@ import (
 )
 
 type Subscription interface {
-	Create(sub effective.Sub) (int, error)
+	Create(sub effective.Sub) (string, error)
+	GetSub(id, name string) (effective.Sub, error)
+	DeleteSub(id, name string) error
+	GetAllSubs(id string) ([]effective.Sub, error)
 }
 
 type Service struct {
@@ -14,5 +17,7 @@ type Service struct {
 }
 
 func NewService(repos *repository.Repository) *Service {
-	return &Service{}
+	return &Service{
+		Subscription: NewSubscriptionService(repos.Subscription),
+	}
 }
