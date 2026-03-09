@@ -28,3 +28,11 @@ func (s *SubService) GetAllSubs(id string) ([]effective.Sub, error) {
 func (s *SubService) DeleteSub(id, name string) error {
 	return s.repo.DeleteSub(id, name)
 }
+
+func (s *SubService) UpdateSub(subID string, input effective.UpdateSubInput) error {
+	return s.repo.UpdateSub(subID, input)
+}
+
+func (s *SubService) GetTotalCost(filter effective.CostFilter) (int, error) {
+	return s.repo.GetTotalCost(filter)
+}

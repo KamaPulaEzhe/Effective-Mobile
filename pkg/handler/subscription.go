@@ -58,6 +58,30 @@ func (h *Handler) getSub(c *gin.Context) {
 // }
 
 func (h *Handler) updateSub(c *gin.Context) {
+	subID := c.Param("id")
+
+	var input effective.UpdateSubInput
+	if err := c.BindJSON(&input); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	if err := input.Validate(); err != nil {
+		newErrorResponse(c, http.StatusBadRequest, err.Error())
+		return
+	}
+
+	err := h.services.Subscription.UpdateSub(subID, input)
+	if err != nil {
+		if errors.Is(err, sql.ErrNoRows) {
+			newErrorResponse(c, http.StatusNotFound, "subscription not found")
+			return
+		}
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"status": "updated"})
 }
 
 func (h *Handler) deleteSub(c *gin.Context) {
@@ -82,11 +106,27 @@ func (h *Handler) deleteSub(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"status": "deleted"})
 }
 
-func (h *Handler) deleteAllSubs(c *gin.Context) {
-}
-
 func (h *Handler) getCost(c *gin.Context) {
-}
+	filter := effective.CostFilter{
+		UserID:    c.Query("user_id"),
+		StartDate: c.Query("start_date"),
+		EndDate:   c.Query("end_date"),
+	}
 
-func (h *Handler) getUserInfo(c *gin.Context) {
+	if filter.UserID == "" || filter.StartDate == "" || filter.EndDate == "" {
+		newErrorResponse(c, http.StatusBadRequest, "user_id, start_date and end_date are required")
+		return
+	}
+
+	if name := c.Query("service_name"); name != "" {
+		filter.ServiceName = &name
+	}
+
+	total, err := h.services.Subscription.GetTotalCost(filter)
+	if err != nil {
+		newErrorResponse(c, http.StatusInternalServerError, err.Error())
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"total_cost": total})
 }
