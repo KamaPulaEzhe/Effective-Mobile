@@ -1,0 +1,223 @@
+basePath: /api
+definitions:
+  effective.Sub:
+    properties:
+      end_date:
+        description: StartDate string `json:"start_date"`
+        type: string
+      id:
+        type: string
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+      user_id:
+        type: string
+    required:
+    - price
+    - service_name
+    - start_date
+    - user_id
+    type: object
+  effective.UpdateSubInput:
+    properties:
+      end_date:
+        type: string
+      price:
+        type: integer
+      service_name:
+        type: string
+      start_date:
+        type: string
+    type: object
+  handler.errorResponse:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8000
+info:
+  contact: {}
+  description: REST сервис для агрегации данных об онлайн подписках пользователей
+  title: Subscription API
+  version: "1.0"
+paths:
+  /subscriptions/:
+    post:
+      consumes:
+      - application/json
+      parameters:
+      - description: Данные подписки
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/effective.Sub'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Создать подписку
+      tags:
+      - subscriptions
+  /subscriptions/{id}:
+    delete:
+      parameters:
+      - description: ID пользователя (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Название сервиса
+        in: query
+        name: name
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Удалить подписку
+      tags:
+      - subscriptions
+    get:
+      parameters:
+      - description: ID пользователя (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Фильтр по названию сервиса
+        in: query
+        name: name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/effective.Sub'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Получить подписки пользователя
+      tags:
+      - subscriptions
+    patch:
+      consumes:
+      - application/json
+      parameters:
+      - description: ID подписки (UUID)
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Поля для обновления (минимум одно)
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/effective.UpdateSubInput'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: string
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Обновить подписку
+      tags:
+      - subscriptions
+  /subscriptions/total-cost:
+    get:
+      parameters:
+      - description: ID пользователя (UUID)
+        in: query
+        name: user_id
+        required: true
+        type: string
+      - description: Начало периода (MM-YYYY)
+        in: query
+        name: start_date
+        required: true
+        type: string
+      - description: Конец периода (MM-YYYY)
+        in: query
+        name: end_date
+        required: true
+        type: string
+      - description: Фильтр по названию сервиса
+        in: query
+        name: service_name
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            additionalProperties:
+              type: integer
+            type: object
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/handler.errorResponse'
+      summary: Суммарная стоимость подписок за период
+      tags:
+      - subscriptions
+swagger: "2.0"

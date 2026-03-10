@@ -5,6 +5,7 @@ import (
 
 	_ "github.com/jackc/pgx/v5/stdlib"
 	"github.com/jmoiron/sqlx"
+	"github.com/sirupsen/logrus"
 )
 
 type Config struct {
@@ -22,16 +23,15 @@ func NewPostgresDB(cfg Config) (*sqlx.DB, error) {
 
 	db, err := sqlx.Open("pgx", connStr)
 	if err != nil {
+		logrus.Errorf("NewPostgresDB: failed to open connection: %s", err.Error())
 		return nil, err
 	}
-
-	// db.SetMaxOpenConns(25)
-	// db.SetMaxIdleConns(25)
-	// db.SetConnMaxLifetime(5 * time.Minute)
 
 	if err = db.Ping(); err != nil {
+		logrus.Errorf("NewPostgresDB: failed to ping database: %s", err.Error())
 		return nil, err
 	}
 
+	logrus.Info("NewPostgresDB: database connection established")
 	return db, nil
 }

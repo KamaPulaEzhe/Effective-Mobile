@@ -10,6 +10,8 @@ type Subscription interface {
 	GetSub(id, name string) (effective.Sub, error)
 	DeleteSub(id, name string) error
 	GetAllSubs(id string) ([]effective.Sub, error)
+	UpdateSub(subID string, input effective.UpdateSubInput) error
+	GetTotalCost(filter effective.CostFilter) (int, error)
 }
 
 type Repository struct {
