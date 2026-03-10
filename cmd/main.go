@@ -15,6 +15,11 @@ import (
 	"github.com/spf13/viper"
 )
 
+// @title           Subscription API
+// @version         1.0
+// @description     REST сервис для агрегации данных об онлайн подписках пользователей
+// @host            localhost:8000
+// @BasePath        /api
 func main() {
 	logrus.SetFormatter(new(logrus.JSONFormatter))
 
