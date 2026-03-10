@@ -73,7 +73,7 @@ DELETE /api/subscriptions/60601fee-2bf1-4721-ae6f-7636e79a0cba?name=Netflix
 GET /api/subscriptions/total-cost?user_id=60601fee-2bf1-4721-ae6f-7636e79a0cba&start_date=01-2025&end_date=12-2025
 ```
 
-С фильтром по сервису:
+Сумма за выбранный период с фильтрацией по id пользователя и названию подписки:
 ```
 GET /api/subscriptions/total-cost?user_id=60601fee-2bf1-4721-ae6f-7636e79a0cba&start_date=01-2025&end_date=12-2025&service_name=Netflix
 ```
