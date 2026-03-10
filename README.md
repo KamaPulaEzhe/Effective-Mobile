@@ -18,10 +18,10 @@ Swagger: `http://localhost:8000/swagger/index.html`
 ## Эндпоинты
 ```
 POST   /api/subscriptions/           - создать подписку
-GET    /api/subscriptions/:id        - получить подписки пользователя
-PATCH  /api/subscriptions/:id        - обновить подписку
-DELETE /api/subscriptions/:id        - удалить подписку
-GET    /api/subscriptions/total-cost - сумма подписок за период
+GET    /api/subscriptions/:id        - получить подписки по ID пользователя
+PATCH  /api/subscriptions/:id        - обновить подписку по ID подписки
+DELETE /api/subscriptions/:id        - удалить подписку по ID пользователя и имени подписки
+GET    /api/subscriptions/total-cost - сумма подписок за период с фильтрацией по ID пользователя и имени сервиса
 ```
 
 ## Примеры
